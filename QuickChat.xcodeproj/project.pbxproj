@@ -9,21 +9,27 @@
 /* Begin PBXBuildFile section */
 		5C3130E423FC573300724511 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3130E323FC573300724511 /* AppDelegate.swift */; };
 		5C3130E623FC573300724511 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3130E523FC573300724511 /* SceneDelegate.swift */; };
-		5C3130E823FC573300724511 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3130E723FC573300724511 /* ViewController.swift */; };
 		5C3130EB23FC573300724511 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C3130E923FC573300724511 /* Main.storyboard */; };
 		5C3130ED23FC573400724511 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C3130EC23FC573400724511 /* Assets.xcassets */; };
 		5C3130F023FC573400724511 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C3130EE23FC573400724511 /* LaunchScreen.storyboard */; };
+		5C31310123FC5EA500724511 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C31310023FC5EA500724511 /* WelcomeViewController.swift */; };
+		5C31310523FC5EFD00724511 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C31310423FC5EFD00724511 /* RegisterViewController.swift */; };
+		5C31310723FC5F0F00724511 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C31310623FC5F0F00724511 /* LoginViewController.swift */; };
+		5C31310923FC5F3300724511 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C31310823FC5F3300724511 /* ChatViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5C3130E023FC573300724511 /* QuickChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C3130E323FC573300724511 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C3130E523FC573300724511 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		5C3130E723FC573300724511 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5C3130EA23FC573300724511 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5C3130EC23FC573400724511 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C3130EF23FC573400724511 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5C3130F123FC573400724511 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C31310023FC5EA500724511 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		5C31310423FC5EFD00724511 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		5C31310623FC5F0F00724511 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		5C31310823FC5F3300724511 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,13 +64,40 @@
 			children = (
 				5C3130E323FC573300724511 /* AppDelegate.swift */,
 				5C3130E523FC573300724511 /* SceneDelegate.swift */,
-				5C3130E723FC573300724511 /* ViewController.swift */,
-				5C3130E923FC573300724511 /* Main.storyboard */,
+				5C3130F723FC5BEC00724511 /* Models */,
+				5C3130FA23FC5C2000724511 /* Views */,
+				5C3130F823FC5C0300724511 /* Controllers */,
 				5C3130EC23FC573400724511 /* Assets.xcassets */,
 				5C3130EE23FC573400724511 /* LaunchScreen.storyboard */,
 				5C3130F123FC573400724511 /* Info.plist */,
 			);
 			path = QuickChat;
+			sourceTree = "<group>";
+		};
+		5C3130F723FC5BEC00724511 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5C3130F823FC5C0300724511 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				5C31310023FC5EA500724511 /* WelcomeViewController.swift */,
+				5C31310423FC5EFD00724511 /* RegisterViewController.swift */,
+				5C31310623FC5F0F00724511 /* LoginViewController.swift */,
+				5C31310823FC5F3300724511 /* ChatViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		5C3130FA23FC5C2000724511 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5C3130E923FC573300724511 /* Main.storyboard */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,9 +171,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C3130E823FC573300724511 /* ViewController.swift in Sources */,
+				5C31310123FC5EA500724511 /* WelcomeViewController.swift in Sources */,
 				5C3130E423FC573300724511 /* AppDelegate.swift in Sources */,
 				5C3130E623FC573300724511 /* SceneDelegate.swift in Sources */,
+				5C31310723FC5F0F00724511 /* LoginViewController.swift in Sources */,
+				5C31310923FC5F3300724511 /* ChatViewController.swift in Sources */,
+				5C31310523FC5EFD00724511 /* RegisterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,7 +330,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.carlosvelasco.QuickChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -312,7 +348,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.carlosvelasco.QuickChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
