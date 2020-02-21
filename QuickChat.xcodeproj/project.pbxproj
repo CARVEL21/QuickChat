@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,6 +17,7 @@
 		5C31310723FC5F0F00724511 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C31310623FC5F0F00724511 /* LoginViewController.swift */; };
 		5C31310923FC5F3300724511 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C31310823FC5F3300724511 /* ChatViewController.swift */; };
 		5CC2BD6723FE0731007D4CCA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5CC2BD6623FE0730007D4CCA /* GoogleService-Info.plist */; };
+		5CE4C19D24006AB30028F852 /* ChatConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE4C19C24006AB30028F852 /* ChatConstants.swift */; };
 		F20DF1588BA3A54B86949399 /* Pods_QuickChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA02833C0799110C5F5DE019 /* Pods_QuickChat.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		5C31310623FC5F0F00724511 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		5C31310823FC5F3300724511 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		5CC2BD6623FE0730007D4CCA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5CE4C19C24006AB30028F852 /* ChatConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConstants.swift; sourceTree = "<group>"; };
 		94FC74971124E2F32E3C8D2D /* Pods-QuickChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuickChat.release.xcconfig"; path = "Target Support Files/Pods-QuickChat/Pods-QuickChat.release.xcconfig"; sourceTree = "<group>"; };
 		AA02833C0799110C5F5DE019 /* Pods_QuickChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuickChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -97,6 +99,7 @@
 				5C3130EE23FC573400724511 /* LaunchScreen.storyboard */,
 				5C3130F123FC573400724511 /* Info.plist */,
 				5CC2BD6623FE0730007D4CCA /* GoogleService-Info.plist */,
+				5CE4C19C24006AB30028F852 /* ChatConstants.swift */,
 			);
 			path = QuickChat;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				5C31310723FC5F0F00724511 /* LoginViewController.swift in Sources */,
 				5C31310923FC5F3300724511 /* ChatViewController.swift in Sources */,
 				5C31310523FC5EFD00724511 /* RegisterViewController.swift in Sources */,
+				5CE4C19D24006AB30028F852 /* ChatConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
