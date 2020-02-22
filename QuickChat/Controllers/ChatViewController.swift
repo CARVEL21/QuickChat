@@ -14,6 +14,8 @@ class ChatViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTextfield: UITextField!
     
+    let db = Firestore.firestore()
+    
     var messages: [Message] = [
         Message(sender: "carlos@me.com", body: "hola, como estas"),
         Message(sender: "Shirley@me.com", body: "hola, muy bien")
@@ -31,6 +33,21 @@ class ChatViewController: UIViewController {
     }
 
     @IBAction func sendPressed(_ sender: Any) {
+        if let messageBody = messageTextfield.text, let messgeSender = Auth.auth().currentUser?.email{
+            db.collection(Constants.FStore.collectionName).addDocument(data: [
+                Constants.FStore.senderField: messgeSender,
+                Constants.FStore.bodyField: messageBody
+            ]){(error) in
+                if let e = error{
+                    print("hubo un problema guardando la data en firestore, \(e)")
+                }else{
+                    print("Se guardo exitosamente la data.")
+                }
+                
+            }
+        }
+        
+        
     }
     
     @IBAction func LogOutPressed(_ sender: Any) {
