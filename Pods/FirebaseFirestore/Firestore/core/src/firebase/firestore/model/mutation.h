@@ -151,7 +151,7 @@ class Mutation {
   /**
    * Represents the mutation type. This is used in place of dynamic_cast.
    */
-  enum class Type { Set, Patch, Transform, Delete, Verify };
+  enum class Type { Set, Patch, Transform, Delete };
 
   /** Creates an invalid mutation. */
   Mutation() = default;

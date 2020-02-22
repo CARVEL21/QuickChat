@@ -23,7 +23,6 @@
 #include "Firestore/core/src/firebase/firestore/core/database_info.h"
 #include "Firestore/core/src/firebase/firestore/local/leveldb_lru_reference_delegate.h"
 #include "Firestore/core/src/firebase/firestore/local/leveldb_migrations.h"
-#include "Firestore/core/src/firebase/firestore/local/leveldb_opener.h"
 #include "Firestore/core/src/firebase/firestore/local/leveldb_util.h"
 #include "Firestore/core/src/firebase/firestore/local/listen_sequence.h"
 #include "Firestore/core/src/firebase/firestore/local/lru_garbage_collector.h"
@@ -44,7 +43,6 @@ namespace {
 using auth::User;
 using leveldb::DB;
 using model::ListenSequenceNumber;
-using util::Filesystem;
 using util::Path;
 using util::Status;
 using util::StatusOr;
@@ -77,11 +75,10 @@ std::set<std::string> CollectUserSet(LevelDbTransaction* transaction) {
 
 util::StatusOr<std::unique_ptr<LevelDbPersistence>> LevelDbPersistence::Create(
     util::Path dir, LocalSerializer serializer, const LruParams& lru_params) {
-  auto* fs = Filesystem::Default();
   Status status = EnsureDirectory(dir);
   if (!status.ok()) return status;
 
-  status = fs->ExcludeFromBackups(dir);
+  status = util::ExcludeFromBackups(dir);
   if (!status.ok()) return status;
 
   StatusOr<std::unique_ptr<DB>> created = OpenDb(dir);
@@ -110,7 +107,7 @@ LevelDbPersistence::LevelDbPersistence(std::unique_ptr<leveldb::DB> db,
       directory_(std::move(directory)),
       users_(std::move(users)),
       serializer_(std::move(serializer)) {
-  target_cache_ = absl::make_unique<LevelDbTargetCache>(this, &serializer_);
+  query_cache_ = absl::make_unique<LevelDbQueryCache>(this, &serializer_);
   document_cache_ =
       absl::make_unique<LevelDbRemoteDocumentCache>(this, &serializer_);
   index_manager_ = absl::make_unique<LevelDbIndexManager>(this);
@@ -118,16 +115,41 @@ LevelDbPersistence::LevelDbPersistence(std::unique_ptr<leveldb::DB> db,
       absl::make_unique<LevelDbLruReferenceDelegate>(this, lru_params);
 
   // TODO(gsoltis): set up a leveldb transaction for these operations.
-  target_cache_->Start();
+  query_cache_->Start();
   reference_delegate_->Start();
   started_ = true;
+}
+
+// MARK: - Storage location
+
+StatusOr<Path> LevelDbPersistence::AppDataDirectory() {
+  return util::AppDataDir(kReservedPathComponent);
+}
+
+util::Path LevelDbPersistence::StorageDirectory(
+    const core::DatabaseInfo& database_info, const util::Path& documents_dir) {
+  // Use two different path formats:
+  //
+  //   * persistence_key / project_id . database_id / name
+  //   * persistence_key / project_id / name
+  //
+  // project_ids are DNS-compatible names and cannot contain dots so there's
+  // no danger of collisions.
+  std::string project_key = database_info.database_id().project_id();
+  if (!database_info.database_id().IsDefaultDatabase()) {
+    absl::StrAppend(&project_key, ".",
+                    database_info.database_id().database_id());
+  }
+
+  // Reserve one additional path component to allow multiple physical databases
+  return Path::JoinUtf8(documents_dir, database_info.persistence_key(),
+                        project_key, "main");
 }
 
 // MARK: - Startup
 
 Status LevelDbPersistence::EnsureDirectory(const Path& dir) {
-  auto* fs = Filesystem::Default();
-  Status status = fs->RecursivelyCreateDir(dir);
+  Status status = util::RecursivelyCreateDir(dir);
   if (!status.ok()) {
     return Status{Error::Internal, "Failed to create persistence directory"}
         .CausedBy(status);
@@ -162,28 +184,25 @@ LevelDbTransaction* LevelDbPersistence::current_transaction() {
 
 util::Status LevelDbPersistence::ClearPersistence(
     const core::DatabaseInfo& database_info) {
-  LevelDbOpener opener(database_info);
-  StatusOr<Path> maybe_data_dir = opener.LevelDbDataDir();
-  HARD_ASSERT(maybe_data_dir.ok(), "Failed to find local LevelDB files: %s",
-              maybe_data_dir.status().ToString());
-  Path leveldb_dir = std::move(maybe_data_dir).ValueOrDie();
+  const StatusOr<Path>& maybe_data_dir = AppDataDirectory();
+  HARD_ASSERT(maybe_data_dir.ok(),
+              "Failed to find the App data directory for the current user.");
 
+  Path leveldb_dir =
+      StorageDirectory(database_info, maybe_data_dir.ValueOrDie());
   LOG_DEBUG("Clearing persistence for path: %s", leveldb_dir.ToUtf8String());
-  auto* fs = Filesystem::Default();
-  return fs->RecursivelyRemove(leveldb_dir);
+  return util::RecursivelyDelete(leveldb_dir);
 }
 
 int64_t LevelDbPersistence::CalculateByteSize() {
-  auto* fs = Filesystem::Default();
-
   int64_t count = 0;
   auto iter = util::DirectoryIterator::Create(directory_);
   for (; iter->Valid(); iter->Next()) {
-    int64_t file_size = fs->FileSize(iter->file()).ValueOrDie();
+    int64_t file_size = util::FileSize(iter->file()).ValueOrDie();
     count += file_size;
   }
 
-  HARD_ASSERT(iter->status().ok(), "Failed to iterate LevelDB directory: %s",
+  HARD_ASSERT(iter->status().ok(), "Failed to iterate leveldb directory: %s",
               iter->status().error_message().c_str());
   HARD_ASSERT(count >= 0 && count <= std::numeric_limits<int64_t>::max(),
               "Overflowed counting bytes cached");
@@ -211,8 +230,8 @@ LevelDbMutationQueue* LevelDbPersistence::GetMutationQueueForUser(
   return current_mutation_queue_.get();
 }
 
-LevelDbTargetCache* LevelDbPersistence::target_cache() {
-  return target_cache_.get();
+LevelDbQueryCache* LevelDbPersistence::query_cache() {
+  return query_cache_.get();
 }
 
 LevelDbRemoteDocumentCache* LevelDbPersistence::remote_document_cache() {
@@ -241,6 +260,8 @@ void LevelDbPersistence::RunInternal(absl::string_view label,
   transaction_->Commit();
   transaction_.reset();
 }
+
+constexpr const char* LevelDbPersistence::kReservedPathComponent;
 
 leveldb::ReadOptions StandardReadOptions() {
   // For now this is paranoid, but perhaps disable that in production builds.
