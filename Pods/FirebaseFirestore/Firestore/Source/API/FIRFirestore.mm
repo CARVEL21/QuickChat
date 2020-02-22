@@ -19,6 +19,7 @@
 #import <FirebaseCore/FIRApp.h>
 #import <FirebaseCore/FIRAppInternal.h>
 #import <FirebaseCore/FIRComponentContainer.h>
+#import <FirebaseCore/FIROptions.h>
 
 #include <memory>
 #include <string>
@@ -28,6 +29,7 @@
 
 #import "Firestore/Source/API/FIRCollectionReference+Internal.h"
 #import "Firestore/Source/API/FIRDocumentReference+Internal.h"
+#import "Firestore/Source/API/FIRFirestore+Internal.h"
 #import "Firestore/Source/API/FIRListenerRegistration+Internal.h"
 #import "Firestore/Source/API/FIRQuery+Internal.h"
 #import "Firestore/Source/API/FIRTransaction+Internal.h"
@@ -63,13 +65,8 @@ using firebase::firestore::core::EventListener;
 using firebase::firestore::model::DatabaseId;
 using firebase::firestore::util::AsyncQueue;
 using firebase::firestore::util::Empty;
-using firebase::firestore::util::MakeCallback;
-using firebase::firestore::util::MakeNSError;
-using firebase::firestore::util::MakeNSString;
-using firebase::firestore::util::MakeString;
 using firebase::firestore::util::ObjcThrowHandler;
 using firebase::firestore::util::SetThrowHandler;
-using firebase::firestore::util::Status;
 using firebase::firestore::util::StatusOr;
 using firebase::firestore::util::ThrowIllegalState;
 using firebase::firestore::util::ThrowInvalidArgument;
@@ -105,11 +102,11 @@ NS_ASSUME_NONNULL_BEGIN
     ThrowIllegalState("Failed to get FirebaseApp instance. Please call FirebaseApp.configure() "
                       "before using Firestore");
   }
-  return [self firestoreForApp:app database:MakeNSString(DatabaseId::kDefault)];
+  return [self firestoreForApp:app database:util::MakeNSString(DatabaseId::kDefault)];
 }
 
 + (instancetype)firestoreForApp:(FIRApp *)app {
-  return [self firestoreForApp:app database:MakeNSString(DatabaseId::kDefault)];
+  return [self firestoreForApp:app database:util::MakeNSString(DatabaseId::kDefault)];
 }
 
 // TODO(b/62410906): make this public
@@ -145,7 +142,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     FSTPreConverterBlock block = ^id _Nullable(id _Nullable input) {
       if ([input isKindOfClass:[FIRDocumentReference class]]) {
-        auto documentReference = (FIRDocumentReference *)input;
+        FIRDocumentReference *documentReference = (FIRDocumentReference *)input;
         return [[FSTDocumentKeyReference alloc] initWithKey:documentReference.key
                                                  databaseID:documentReference.firestore.databaseID];
       } else {
@@ -186,7 +183,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [[FIRCollectionReference alloc]
-      initWithReference:_firestore->GetCollection(MakeString(collectionPath))];
+      initWithReference:_firestore->GetCollection(util::MakeString(collectionPath))];
 }
 
 - (FIRDocumentReference *)documentWithPath:(NSString *)documentPath {
@@ -197,7 +194,7 @@ NS_ASSUME_NONNULL_BEGIN
     ThrowInvalidArgument("Invalid path (%s). Paths must not contain // in them.", documentPath);
   }
 
-  DocumentReference documentReference = _firestore->GetDocument(MakeString(documentPath));
+  DocumentReference documentReference = _firestore->GetDocument(util::MakeString(documentPath));
   return [[FIRDocumentReference alloc] initWithReference:std::move(documentReference)];
 }
 
@@ -210,7 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
                          collectionID);
   }
 
-  auto query = _firestore->GetCollectionGroup(MakeString(collectionID));
+  auto query = _firestore->GetCollectionGroup(util::MakeString(collectionID));
   return [[FIRQuery alloc] initWithQuery:std::move(query) firestore:_firestore];
 }
 
@@ -256,16 +253,16 @@ NS_ASSUME_NONNULL_BEGIN
           if (error.domain != FIRFirestoreErrorDomain) {
             internalTransaction->MarkPermanentlyFailed();
           }
-          internalCallback(Status::FromNSError(error));
+          internalCallback(util::Status::FromNSError(error));
         } else {
-          internalCallback(Status::OK());
+          internalCallback(util::Status::OK());
         }
       });
     }
 
-    void HandleFinalStatus(const Status &status) {
+    void HandleFinalStatus(const util::Status &status) {
       if (!status.ok()) {
-        user_completion_(nil, MakeNSError(status));
+        user_completion_(nil, util::MakeNSError(status));
         return;
       }
 
@@ -296,7 +293,7 @@ NS_ASSUME_NONNULL_BEGIN
   //
   // PORTING NOTE: Other platforms where the user return value is internally representable don't
   // need this wrapper.
-  auto objcTranslator = [result_capture](const Status &status) {
+  auto objcTranslator = [result_capture](const util::Status &status) {
     result_capture->HandleFinalStatus(status);
   };
 
@@ -322,26 +319,26 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)enableNetworkWithCompletion:(nullable void (^)(NSError *_Nullable error))completion {
-  _firestore->EnableNetwork(MakeCallback(completion));
+  _firestore->EnableNetwork(util::MakeCallback(completion));
 }
 
 - (void)disableNetworkWithCompletion:(nullable void (^)(NSError *_Nullable))completion {
-  _firestore->DisableNetwork(MakeCallback(completion));
+  _firestore->DisableNetwork(util::MakeCallback(completion));
 }
 
 - (void)clearPersistenceWithCompletion:(nullable void (^)(NSError *_Nullable error))completion {
-  _firestore->ClearPersistence(MakeCallback(completion));
+  _firestore->ClearPersistence(util::MakeCallback(completion));
 }
 
 - (void)waitForPendingWritesWithCompletion:(void (^)(NSError *_Nullable error))completion {
-  _firestore->WaitForPendingWrites(MakeCallback(completion));
+  _firestore->WaitForPendingWrites(util::MakeCallback(completion));
 }
 
 - (void)terminateWithCompletion:(nullable void (^)(NSError *_Nullable error))completion {
   id<FSTFirestoreInstanceRegistry> strongRegistry = _registry;
   if (strongRegistry) {
     [strongRegistry
-        removeInstanceWithDatabase:MakeNSString(_firestore->database_id().database_id())];
+        removeInstanceWithDatabase:util::MakeNSString(_firestore->database_id().database_id())];
   }
   [self terminateInternalWithCompletion:completion];
 }
@@ -370,12 +367,16 @@ NS_ASSUME_NONNULL_BEGIN
   return _firestore->database_id();
 }
 
++ (BOOL)isLoggingEnabled {
+  return util::LogIsLoggable(util::kLogLevelDebug);
+}
+
 + (FIRFirestore *)recoverFromFirestore:(std::shared_ptr<Firestore>)firestore {
   return (__bridge FIRFirestore *)firestore->extension();
 }
 
 - (void)terminateInternalWithCompletion:(nullable void (^)(NSError *_Nullable error))completion {
-  _firestore->Terminate(MakeCallback(completion));
+  _firestore->Terminate(util::MakeCallback(completion));
 }
 
 @end

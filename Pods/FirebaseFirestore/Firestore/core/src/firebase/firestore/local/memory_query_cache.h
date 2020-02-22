@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_MEMORY_TARGET_CACHE_H_
-#define FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_MEMORY_TARGET_CACHE_H_
+#ifndef FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_MEMORY_QUERY_CACHE_H_
+#define FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_MEMORY_QUERY_CACHE_H_
 
 #include <cstdint>
 #include <unordered_map>
 #include <utility>
 
+#include "Firestore/core/src/firebase/firestore/local/query_cache.h"
 #include "Firestore/core/src/firebase/firestore/local/reference_set.h"
-#include "Firestore/core/src/firebase/firestore/local/target_cache.h"
 #include "Firestore/core/src/firebase/firestore/model/document_key_set.h"
 #include "Firestore/core/src/firebase/firestore/model/snapshot_version.h"
 #include "Firestore/core/src/firebase/firestore/model/types.h"
@@ -34,23 +34,23 @@ namespace local {
 class MemoryPersistence;
 class Sizer;
 
-class MemoryTargetCache : public TargetCache {
+class MemoryQueryCache : public QueryCache {
  public:
-  explicit MemoryTargetCache(MemoryPersistence* persistence);
+  explicit MemoryQueryCache(MemoryPersistence* persistence);
 
   // Target-related methods
-  void AddTarget(const TargetData& target_data) override;
+  void AddTarget(const QueryData& query_data) override;
 
-  void UpdateTarget(const TargetData& target_data) override;
+  void UpdateTarget(const QueryData& query_data) override;
 
-  void RemoveTarget(const TargetData& target_data) override;
+  void RemoveTarget(const QueryData& query_data) override;
 
-  absl::optional<TargetData> GetTarget(const core::Target& target) override;
+  absl::optional<QueryData> GetTarget(const core::Target& target) override;
 
   void EnumerateTargets(const TargetCallback& callback) override;
 
   int RemoveTargets(model::ListenSequenceNumber upper_bound,
-                    const std::unordered_map<model::TargetId, TargetData>&
+                    const std::unordered_map<model::TargetId, QueryData>&
                         live_targets) override;
 
   // Key-related methods
@@ -95,7 +95,7 @@ class MemoryTargetCache : public TargetCache {
   model::SnapshotVersion last_remote_snapshot_version_;
 
   /** Maps a target to the data about that query. */
-  std::unordered_map<core::Target, TargetData> targets_;
+  std::unordered_map<core::Target, QueryData> targets_;
 
   /**
    * A ordered bidirectional mapping between documents and the remote target
@@ -108,4 +108,4 @@ class MemoryTargetCache : public TargetCache {
 }  // namespace firestore
 }  // namespace firebase
 
-#endif  // FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_MEMORY_TARGET_CACHE_H_
+#endif  // FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_MEMORY_QUERY_CACHE_H_

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include "Firestore/core/src/firebase/firestore/local/memory_target_cache.h"
+#include "Firestore/core/src/firebase/firestore/local/memory_query_cache.h"
 
 #include <vector>
 
 #include "Firestore/core/src/firebase/firestore/local/memory_persistence.h"
+#include "Firestore/core/src/firebase/firestore/local/query_data.h"
 #include "Firestore/core/src/firebase/firestore/local/reference_delegate.h"
 #include "Firestore/core/src/firebase/firestore/local/sizer.h"
-#include "Firestore/core/src/firebase/firestore/local/target_data.h"
 #include "Firestore/core/src/firebase/firestore/model/document_key.h"
 
 namespace firebase {
@@ -35,7 +35,7 @@ using model::ListenSequenceNumber;
 using model::SnapshotVersion;
 using model::TargetId;
 
-MemoryTargetCache::MemoryTargetCache(MemoryPersistence* persistence)
+MemoryQueryCache::MemoryQueryCache(MemoryPersistence* persistence)
     : persistence_(persistence),
       highest_listen_sequence_number_(ListenSequenceNumber(0)),
       highest_target_id_(TargetId(0)),
@@ -43,49 +43,49 @@ MemoryTargetCache::MemoryTargetCache(MemoryPersistence* persistence)
       targets_() {
 }
 
-void MemoryTargetCache::AddTarget(const TargetData& target_data) {
-  targets_[target_data.target()] = target_data;
-  if (target_data.target_id() > highest_target_id_) {
-    highest_target_id_ = target_data.target_id();
+void MemoryQueryCache::AddTarget(const QueryData& query_data) {
+  targets_[query_data.target()] = query_data;
+  if (query_data.target_id() > highest_target_id_) {
+    highest_target_id_ = query_data.target_id();
   }
-  if (target_data.sequence_number() > highest_listen_sequence_number_) {
-    highest_listen_sequence_number_ = target_data.sequence_number();
+  if (query_data.sequence_number() > highest_listen_sequence_number_) {
+    highest_listen_sequence_number_ = query_data.sequence_number();
   }
 }
 
-void MemoryTargetCache::UpdateTarget(const TargetData& target_data) {
-  // For the memory target cache, adds and updates are treated the same.
-  AddTarget(target_data);
+void MemoryQueryCache::UpdateTarget(const QueryData& query_data) {
+  // For the memory query cache, adds and updates are treated the same.
+  AddTarget(query_data);
 }
 
-void MemoryTargetCache::RemoveTarget(const TargetData& target_data) {
-  targets_.erase(target_data.target());
-  references_.RemoveReferences(target_data.target_id());
+void MemoryQueryCache::RemoveTarget(const QueryData& query_data) {
+  targets_.erase(query_data.target());
+  references_.RemoveReferences(query_data.target_id());
 }
 
-absl::optional<TargetData> MemoryTargetCache::GetTarget(const Target& target) {
+absl::optional<QueryData> MemoryQueryCache::GetTarget(const Target& target) {
   auto iter = targets_.find(target);
-  return iter == targets_.end() ? absl::optional<TargetData>{} : iter->second;
+  return iter == targets_.end() ? absl::optional<QueryData>{} : iter->second;
 }
 
-void MemoryTargetCache::EnumerateTargets(const TargetCallback& callback) {
+void MemoryQueryCache::EnumerateTargets(const TargetCallback& callback) {
   for (const auto& kv : targets_) {
     callback(kv.second);
   }
 }
 
-int MemoryTargetCache::RemoveTargets(
+int MemoryQueryCache::RemoveTargets(
     model::ListenSequenceNumber upper_bound,
-    const std::unordered_map<TargetId, TargetData>& live_targets) {
+    const std::unordered_map<TargetId, QueryData>& live_targets) {
   std::vector<const Target*> to_remove;
   for (const auto& kv : targets_) {
     const Target& target = kv.first;
-    const TargetData& target_data = kv.second;
+    const QueryData& query_data = kv.second;
 
-    if (target_data.sequence_number() <= upper_bound) {
-      if (live_targets.find(target_data.target_id()) == live_targets.end()) {
+    if (query_data.sequence_number() <= upper_bound) {
+      if (live_targets.find(query_data.target_id()) == live_targets.end()) {
         to_remove.push_back(&target);
-        references_.RemoveReferences(target_data.target_id());
+        references_.RemoveReferences(query_data.target_id());
       }
     }
   }
@@ -96,31 +96,31 @@ int MemoryTargetCache::RemoveTargets(
   return static_cast<int>(to_remove.size());
 }
 
-void MemoryTargetCache::AddMatchingKeys(const DocumentKeySet& keys,
-                                        TargetId target_id) {
+void MemoryQueryCache::AddMatchingKeys(const DocumentKeySet& keys,
+                                       TargetId target_id) {
   references_.AddReferences(keys, target_id);
   for (const DocumentKey& key : keys) {
     persistence_->reference_delegate()->AddReference(key);
   }
 }
 
-void MemoryTargetCache::RemoveMatchingKeys(const DocumentKeySet& keys,
-                                           TargetId target_id) {
+void MemoryQueryCache::RemoveMatchingKeys(const DocumentKeySet& keys,
+                                          TargetId target_id) {
   references_.RemoveReferences(keys, target_id);
   for (const DocumentKey& key : keys) {
     persistence_->reference_delegate()->RemoveReference(key);
   }
 }
 
-DocumentKeySet MemoryTargetCache::GetMatchingKeys(TargetId target_id) {
+DocumentKeySet MemoryQueryCache::GetMatchingKeys(TargetId target_id) {
   return references_.ReferencedKeys(target_id);
 }
 
-bool MemoryTargetCache::Contains(const DocumentKey& key) {
+bool MemoryQueryCache::Contains(const DocumentKey& key) {
   return references_.ContainsKey(key);
 }
 
-int64_t MemoryTargetCache::CalculateByteSize(const Sizer& sizer) {
+int64_t MemoryQueryCache::CalculateByteSize(const Sizer& sizer) {
   int64_t count = 0;
   for (const auto& kv : targets_) {
     count += sizer.CalculateByteSize(kv.second);
@@ -128,11 +128,11 @@ int64_t MemoryTargetCache::CalculateByteSize(const Sizer& sizer) {
   return count;
 }
 
-const SnapshotVersion& MemoryTargetCache::GetLastRemoteSnapshotVersion() const {
+const SnapshotVersion& MemoryQueryCache::GetLastRemoteSnapshotVersion() const {
   return last_remote_snapshot_version_;
 }
 
-void MemoryTargetCache::SetLastRemoteSnapshotVersion(SnapshotVersion version) {
+void MemoryQueryCache::SetLastRemoteSnapshotVersion(SnapshotVersion version) {
   last_remote_snapshot_version_ = std::move(version);
 }
 

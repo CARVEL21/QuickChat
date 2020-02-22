@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_TARGET_DATA_H_
-#define FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_TARGET_DATA_H_
+#ifndef FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_QUERY_DATA_H_
+#define FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_QUERY_DATA_H_
 
 #include <iosfwd>
 #include <memory>
@@ -51,10 +51,10 @@ std::ostream& operator<<(std::ostream& os, QueryPurpose purpose);
  * An immutable set of metadata that the store will need to keep track of for
  * each target.
  */
-class TargetData {
+class QueryData {
  public:
   /**
-   * Creates a new TargetData with the given values.
+   * Creates a new QueryData with the given values.
    *
    * @param target The target being listened to.
    * @param target_id The target to which the query corresponds, assigned by the
@@ -68,34 +68,33 @@ class TargetData {
    *     data that matches the query. The resume token essentially identifies a
    *     point in time from which the server should resume sending results.
    */
-  TargetData(core::Target target,
-             model::TargetId target_id,
-             model::ListenSequenceNumber sequence_number,
-             QueryPurpose purpose,
-             model::SnapshotVersion snapshot_version,
-             model::SnapshotVersion last_limbo_free_snapshot_version,
-             nanopb::ByteString resume_token);
+  QueryData(core::Target target,
+            model::TargetId target_id,
+            model::ListenSequenceNumber sequence_number,
+            QueryPurpose purpose,
+            model::SnapshotVersion snapshot_version,
+            model::SnapshotVersion last_limbo_free_snapshot_version,
+            nanopb::ByteString resume_token);
 
   /**
-   * Convenience constructor for use when creating a TargetData for the first
+   * Convenience constructor for use when creating a QueryData for the first
    * time.
    */
-  TargetData(const core::Target target,
-             int target_id,
-             model::ListenSequenceNumber sequence_number,
-             QueryPurpose purpose);
+  QueryData(const core::Target target,
+            int target_id,
+            model::ListenSequenceNumber sequence_number,
+            QueryPurpose purpose);
 
   /**
-   * Creates an invalid TargetData. Prefer TargetData::Invalid() for
-   * readability.
+   * Creates an invalid QueryData. Prefer QueryData::Invalid() for readability.
    */
-  TargetData() = default;
+  QueryData() = default;
 
   /**
-   * Constructs an invalid TargetData. Reading any properties of the returned
+   * Constructs an invalid QueryData. Reading any properties of the returned
    * value is undefined.
    */
-  static TargetData Invalid();
+  static QueryData Invalid();
 
   /** The target being listened to. */
   const core::Target& target() const {
@@ -142,31 +141,31 @@ class TargetData {
     return resume_token_;
   }
 
-  /** Creates a new target data instance with an updated sequence number. */
-  TargetData WithSequenceNumber(
+  /** Creates a new query data instance with an updated sequence number. */
+  QueryData WithSequenceNumber(
       model::ListenSequenceNumber sequence_number) const;
 
   /**
-   * Creates a new target data instance with an updated resume token and
-   * snapshot version.
-   */
-  TargetData WithResumeToken(nanopb::ByteString resume_token,
-                             model::SnapshotVersion snapshot_version) const;
-
-  /**
-   * Creates a new target data instance with an updated last limbo free snapshot
+   * Creates a new query data instance with an updated resume token and snapshot
    * version.
    */
-  TargetData WithLastLimboFreeSnapshotVersion(
+  QueryData WithResumeToken(nanopb::ByteString resume_token,
+                            model::SnapshotVersion snapshot_version) const;
+
+  /**
+   * Creates a new query data instance with an updated last limbo free snapshot
+   * version.
+   */
+  QueryData WithLastLimboFreeSnapshotVersion(
       model::SnapshotVersion last_limbo_free_snapshot_version) const;
 
-  friend bool operator==(const TargetData& lhs, const TargetData& rhs);
+  friend bool operator==(const QueryData& lhs, const QueryData& rhs);
 
   size_t Hash() const;
 
   std::string ToString() const;
 
-  friend std::ostream& operator<<(std::ostream& os, const TargetData& value);
+  friend std::ostream& operator<<(std::ostream& os, const QueryData& value);
 
  private:
   core::Target target_;
@@ -178,7 +177,7 @@ class TargetData {
   nanopb::ByteString resume_token_;
 };
 
-inline bool operator!=(const TargetData& lhs, const TargetData& rhs) {
+inline bool operator!=(const QueryData& lhs, const QueryData& rhs) {
   return !(lhs == rhs);
 }
 
@@ -186,4 +185,4 @@ inline bool operator!=(const TargetData& lhs, const TargetData& rhs) {
 }  // namespace firestore
 }  // namespace firebase
 
-#endif  // FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_TARGET_DATA_H_
+#endif  // FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_LOCAL_QUERY_DATA_H_
