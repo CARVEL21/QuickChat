@@ -13,6 +13,11 @@ struct Constants {
     static let registerSegue = "RegisterToChat"
     static let loginSegue = "LoginToChat"
     
+    struct BrandColors {
+        static let lightRed = "BrandLightRed"
+        static let blue = "BrandBlue"
+    }
+    
     struct FStore {
         static let collectionName = "messages"
         static let senderField = "sender"
