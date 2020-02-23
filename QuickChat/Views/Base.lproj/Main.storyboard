@@ -156,7 +156,7 @@
             </objects>
             <point key="canvasLocation" x="3797.1014492753625" y="274.55357142857139"/>
         </scene>
-        <!--Login View Controller-->
+        <!--LOG IN-->
         <scene sceneID="oPD-UQ-Ybw">
             <objects>
                 <viewController id="WDx-L1-Lub" customClass="LoginViewController" customModule="QuickChat" customModuleProvider="target" sceneMemberID="viewController">
@@ -241,7 +241,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9UM-7B-mo7"/>
                     </view>
-                    <navigationItem key="navigationItem" id="yqo-Cy-VyZ"/>
+                    <navigationItem key="navigationItem" title="LOG IN" id="yqo-Cy-VyZ"/>
                     <connections>
                         <outlet property="emailTextField" destination="dwm-Of-flc" id="nFn-eu-1jX"/>
                         <outlet property="passwordTextfield" destination="uNA-lZ-VBf" id="oUc-cr-YXQ"/>
@@ -252,7 +252,7 @@
             </objects>
             <point key="canvasLocation" x="2495.6521739130435" y="818.97321428571422"/>
         </scene>
-        <!--Register View Controller-->
+        <!--REGISTER-->
         <scene sceneID="oEW-re-EUP">
             <objects>
                 <viewController id="z1W-dd-xpv" customClass="RegisterViewController" customModule="QuickChat" customModuleProvider="target" sceneMemberID="viewController">
@@ -337,7 +337,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="buh-ix-fFf"/>
                     </view>
-                    <navigationItem key="navigationItem" id="rjA-Ni-h3H"/>
+                    <navigationItem key="navigationItem" title="REGISTER" id="rjA-Ni-h3H"/>
                     <connections>
                         <outlet property="emailTextfield" destination="x3A-zs-oiR" id="ZlG-oR-jsu"/>
                         <outlet property="passwordTextfield" destination="dnQ-Ff-vfc" id="5Zs-wo-Gk9"/>
