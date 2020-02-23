@@ -46,8 +46,6 @@ class ChatViewController: UIViewController {
                         if let messageSender = data[Constants.FStore.senderField] as? String, let messageBody =
                                 data[Constants.FStore.bodyField] as? String{
                                 let newMessage = Message(sender: messageSender, body: messageBody)
-                            print(messageSender)
-                            print(newMessage)
                                 self.messages.append(newMessage)
                                 
                                 DispatchQueue.main.async {
@@ -55,9 +53,6 @@ class ChatViewController: UIViewController {
                                     let indexPath = IndexPath(row: self.messages.count-1, section: 0)
                                     self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
                                 }
-                            
-                            
-                            
                         }
                     }
                 }
@@ -68,9 +63,10 @@ class ChatViewController: UIViewController {
 
 
     @IBAction func sendPressed(_ sender: Any) {
-        if let messageBody = messageTextfield.text, let messgeSender = Auth.auth().currentUser?.email{
+        let messageSender = ((Auth.auth().currentUser?.email) != nil) ? Auth.auth().currentUser?.email : Auth.auth().currentUser?.displayName
+        if let messageBody = messageTextfield.text, (messageSender != nil){
             db.collection(Constants.FStore.collectionName).addDocument(data: [
-                Constants.FStore.senderField: messgeSender,
+                Constants.FStore.senderField: messageSender,
                 Constants.FStore.bodyField: messageBody,
                 Constants.FStore.dateField:Date().timeIntervalSince1970
             ]){(error) in
@@ -111,27 +107,32 @@ extension ChatViewController: UITableViewDataSource{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
             as! MessageCell
-        
         let messageSender = message.sender
-        let range: Range<String.Index> = messageSender.range(of: "@")!
-        let indexEnd: Int = messageSender.distance(from: messageSender.startIndex, to: range.lowerBound)
-        let index: String.Index = messageSender.index(messageSender.startIndex, offsetBy: indexEnd )
-        let newStr = String(messageSender[..<index])
+        if messageSender.contains("@") {
+            let range: Range<String.Index> = messageSender.range(of: "@")!
+            let indexEnd: Int = messageSender.distance(from: messageSender.startIndex, to: range.lowerBound)
+            let index: String.Index = messageSender.index(messageSender.startIndex, offsetBy: indexEnd )
+            let nameSender = String(messageSender[..<index])
+            cell.nameLabel.text = nameSender
+
+         } else {
+            cell.nameLabel.text = message.sender
+         }
+      
         cell.label.text = message.body
-        cell.nameLabel.text = newStr
         
         //mensaje de usuario actual
-        if message.sender == Auth.auth().currentUser?.email{
+        if message.sender == Auth.auth().currentUser?.email || message.sender == Auth.auth().currentUser?.displayName {
             cell.leftImageView.isHidden = true
             cell.nameLabel.isHidden = true
+            cell.nameBubble.isHidden = true
             cell.rightImageView.isHidden = false
             cell.messageBubble.backgroundColor = UIColor(named: Constants.BrandColors.blue)
         }else{
-            cell.leftImageView.isHidden = false
+            cell.leftImageView.isHidden = true
             cell.rightImageView.isHidden = true
             cell.nameLabel.isHidden = false
             cell.messageBubble.backgroundColor = UIColor(named: Constants.BrandColors.lightRed)
-            cell.nameLabel.backgroundColor = UIColor(named: Constants.BrandColors.lightRed)
         }
 
         return cell

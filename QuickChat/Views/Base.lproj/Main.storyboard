@@ -16,21 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxB-66-Txw">
-                                <rect key="frame" x="52" y="374" width="310" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="l1c-FU-ZQW"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="43"/>
-                                <color key="textColor" name="BrandBlue"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eyG-be-aXx">
                                 <rect key="frame" x="0.0" y="657" width="414" height="48"/>
                                 <color key="backgroundColor" name="BrandLightBlue"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="ZFB-Cw-pak"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <state key="normal" title="REGISTER">
                                     <color key="titleColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -43,7 +31,7 @@
                                 <rect key="frame" x="0.0" y="713" width="414" height="61"/>
                                 <color key="backgroundColor" name="BrandBlue"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="61" id="JsT-Zv-43d"/>
+                                    <constraint firstAttribute="height" constant="61" id="R47-MA-h8I"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <state key="normal" title="LOG IN">
@@ -53,24 +41,56 @@
                                     <segue destination="WDx-L1-Lub" kind="show" id="r6G-Rm-nmT"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tKu-xA-uJ0">
+                                <rect key="frame" x="0.0" y="596" width="414" height="48"/>
+                                <color key="backgroundColor" name="BrandBlue"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <state key="normal" title="CONNECT">
+                                    <color key="titleColor" name="BrandLightBlue"/>
+                                </state>
+                                <connections>
+                                    <action selector="nickNameAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xda-ID-HVq"/>
+                                    <segue destination="FiE-bB-boF" kind="show" identifier="WelcomeToChat" id="GDs-Xd-g2L"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="NICKNAME" textAlignment="center" minimumFontSize="17" id="Vcj-Oz-BNc" userLabel="Email Textfield">
+                                <rect key="frame" x="52" y="420" width="310" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" name="BrandBlue"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxB-66-Txw">
+                                <rect key="frame" x="52" y="242" width="310" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="yNJ-Ck-Ini"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="43"/>
+                                <color key="textColor" name="BrandBlue"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="AnC-I5-avb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0yE-eR-ggA"/>
-                            <constraint firstItem="AnC-I5-avb" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="6I2-ge-2HF"/>
-                            <constraint firstItem="wxB-66-Txw" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9Ui-4t-2jb"/>
-                            <constraint firstItem="AnC-I5-avb" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Cjp-M6-VdW"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wxB-66-Txw" secondAttribute="trailing" id="M4x-DH-fFg"/>
-                            <constraint firstItem="AnC-I5-avb" firstAttribute="top" secondItem="eyG-be-aXx" secondAttribute="bottom" constant="8" id="MTg-J7-JwD"/>
-                            <constraint firstItem="eyG-be-aXx" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="a2v-6P-Nky"/>
-                            <constraint firstItem="wxB-66-Txw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="52" id="iuR-fK-hLJ"/>
-                            <constraint firstItem="wxB-66-Txw" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="s1w-Th-lO7"/>
-                            <constraint firstItem="eyG-be-aXx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vri-yG-Uwy"/>
+                            <constraint firstItem="AnC-I5-avb" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="3Qm-Zb-uRy"/>
+                            <constraint firstItem="tKu-xA-uJ0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="7xp-e6-8zh"/>
+                            <constraint firstItem="AnC-I5-avb" firstAttribute="top" secondItem="eyG-be-aXx" secondAttribute="bottom" constant="8" id="CCN-AK-BWY"/>
+                            <constraint firstItem="eyG-be-aXx" firstAttribute="trailing" secondItem="AnC-I5-avb" secondAttribute="trailing" id="SEk-3s-uWs"/>
+                            <constraint firstItem="eyG-be-aXx" firstAttribute="leading" secondItem="AnC-I5-avb" secondAttribute="leading" id="TEN-zg-TR8"/>
+                            <constraint firstItem="wxB-66-Txw" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="242" id="TRA-8I-zgC"/>
+                            <constraint firstItem="wxB-66-Txw" firstAttribute="leading" secondItem="Vcj-Oz-BNc" secondAttribute="leading" id="aJ8-dD-5EE"/>
+                            <constraint firstItem="tKu-xA-uJ0" firstAttribute="centerX" secondItem="Vcj-Oz-BNc" secondAttribute="centerX" id="bXf-a2-A9C"/>
+                            <constraint firstItem="eyG-be-aXx" firstAttribute="top" secondItem="tKu-xA-uJ0" secondAttribute="bottom" constant="13" id="enA-d7-gXK"/>
+                            <constraint firstItem="wxB-66-Txw" firstAttribute="trailing" secondItem="Vcj-Oz-BNc" secondAttribute="trailing" id="mh5-ei-uoH"/>
+                            <constraint firstItem="tKu-xA-uJ0" firstAttribute="trailing" secondItem="eyG-be-aXx" secondAttribute="trailing" id="vNd-aI-aWh"/>
+                            <constraint firstItem="tKu-xA-uJ0" firstAttribute="leading" secondItem="eyG-be-aXx" secondAttribute="leading" id="vgB-uJ-Zde"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="iuq-5G-Q1D"/>
                     <connections>
+                        <outlet property="connect" destination="tKu-xA-uJ0" id="ske-cJ-wOy"/>
+                        <outlet property="nickName" destination="Vcj-Oz-BNc" id="aEA-9x-jKC"/>
                         <outlet property="titleLabel" destination="wxB-66-Txw" id="qGF-kO-ERL"/>
                     </connections>
                 </viewController>
@@ -156,7 +176,7 @@
             </objects>
             <point key="canvasLocation" x="3797.1014492753625" y="274.55357142857139"/>
         </scene>
-        <!--Login View Controller-->
+        <!--LOG IN-->
         <scene sceneID="oPD-UQ-Ybw">
             <objects>
                 <viewController id="WDx-L1-Lub" customClass="LoginViewController" customModule="QuickChat" customModuleProvider="target" sceneMemberID="viewController">
@@ -241,7 +261,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9UM-7B-mo7"/>
                     </view>
-                    <navigationItem key="navigationItem" id="yqo-Cy-VyZ"/>
+                    <navigationItem key="navigationItem" title="LOG IN" id="yqo-Cy-VyZ"/>
                     <connections>
                         <outlet property="emailTextField" destination="dwm-Of-flc" id="nFn-eu-1jX"/>
                         <outlet property="passwordTextfield" destination="uNA-lZ-VBf" id="oUc-cr-YXQ"/>
@@ -252,7 +272,7 @@
             </objects>
             <point key="canvasLocation" x="2495.6521739130435" y="818.97321428571422"/>
         </scene>
-        <!--Register View Controller-->
+        <!--REGISTER-->
         <scene sceneID="oEW-re-EUP">
             <objects>
                 <viewController id="z1W-dd-xpv" customClass="RegisterViewController" customModule="QuickChat" customModuleProvider="target" sceneMemberID="viewController">
@@ -337,7 +357,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="buh-ix-fFf"/>
                     </view>
-                    <navigationItem key="navigationItem" id="rjA-Ni-h3H"/>
+                    <navigationItem key="navigationItem" title="REGISTER" id="rjA-Ni-h3H"/>
                     <connections>
                         <outlet property="emailTextfield" destination="x3A-zs-oiR" id="ZlG-oR-jsu"/>
                         <outlet property="passwordTextfield" destination="dnQ-Ff-vfc" id="5Zs-wo-Gk9"/>
@@ -387,6 +407,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KZl-ji-wly"/>
+        <segue reference="GDs-Xd-g2L"/>
     </inferredMetricsTieBreakers>
 </document>
