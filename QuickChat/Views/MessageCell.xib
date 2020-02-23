@@ -27,20 +27,29 @@
                                     <constraint firstAttribute="width" constant="40" id="eih-Rf-yqm"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name you" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lqd-NK-Ad5">
-                                <rect key="frame" x="60" y="0.0" width="77.5" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="77.5" id="XfP-jD-cpd"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7tj-cs-EiG">
-                                <rect key="frame" x="147.5" y="0.0" width="186.5" height="40"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YF1-XS-ZbQ">
+                                <rect key="frame" x="60" y="0.0" width="89" height="40"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fq-Lu-Vpv">
-                                        <rect key="frame" x="10" y="10" width="166.5" height="20"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Name you" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lqd-NK-Ad5">
+                                        <rect key="frame" x="8" y="10" width="73" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.65700463656037067" green="0.92560799064531707" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Lqd-NK-Ad5" secondAttribute="trailing" constant="10" id="8b8-zY-gli"/>
+                                    <constraint firstAttribute="bottom" secondItem="Lqd-NK-Ad5" secondAttribute="bottom" constant="10" id="8pr-ob-Lfm"/>
+                                    <constraint firstItem="Lqd-NK-Ad5" firstAttribute="top" secondItem="YF1-XS-ZbQ" secondAttribute="top" constant="10" id="jyO-Tz-CPK"/>
+                                    <constraint firstItem="Lqd-NK-Ad5" firstAttribute="leading" secondItem="YF1-XS-ZbQ" secondAttribute="leading" constant="10" id="rPd-ui-VgJ"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7tj-cs-EiG">
+                                <rect key="frame" x="169" y="0.0" width="165" height="40"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fq-Lu-Vpv">
+                                        <rect key="frame" x="10" y="10" width="145" height="20"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -62,9 +71,6 @@
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="7tj-cs-EiG" firstAttribute="leading" secondItem="Lqd-NK-Ad5" secondAttribute="trailing" constant="10" id="6e7-fe-wMA"/>
-                        </constraints>
                     </stackView>
                 </subviews>
                 <constraints>
@@ -79,6 +85,7 @@
                 <outlet property="label" destination="5fq-Lu-Vpv" id="otX-dm-mTa"/>
                 <outlet property="leftImageView" destination="q0s-6e-dpu" id="3fo-Ee-t3Q"/>
                 <outlet property="messageBubble" destination="7tj-cs-EiG" id="7xN-J3-vKE"/>
+                <outlet property="nameBubble" destination="YF1-XS-ZbQ" id="Q5N-ym-kGm"/>
                 <outlet property="nameLabel" destination="Lqd-NK-Ad5" id="NRJ-Cn-ErP"/>
                 <outlet property="rightImageView" destination="mog-m3-UU6" id="6Nv-eN-xes"/>
             </connections>

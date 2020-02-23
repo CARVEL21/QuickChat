@@ -46,8 +46,6 @@ class ChatViewController: UIViewController {
                         if let messageSender = data[Constants.FStore.senderField] as? String, let messageBody =
                                 data[Constants.FStore.bodyField] as? String{
                                 let newMessage = Message(sender: messageSender, body: messageBody)
-                            print(messageSender)
-                            print(newMessage)
                                 self.messages.append(newMessage)
                                 
                                 DispatchQueue.main.async {
@@ -55,9 +53,6 @@ class ChatViewController: UIViewController {
                                     let indexPath = IndexPath(row: self.messages.count-1, section: 0)
                                     self.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
                                 }
-                            
-                            
-                            
                         }
                     }
                 }
@@ -116,22 +111,22 @@ extension ChatViewController: UITableViewDataSource{
         let range: Range<String.Index> = messageSender.range(of: "@")!
         let indexEnd: Int = messageSender.distance(from: messageSender.startIndex, to: range.lowerBound)
         let index: String.Index = messageSender.index(messageSender.startIndex, offsetBy: indexEnd )
-        let newStr = String(messageSender[..<index])
+        let nameSender = String(messageSender[..<index])
         cell.label.text = message.body
-        cell.nameLabel.text = newStr
+        cell.nameLabel.text = nameSender
         
         //mensaje de usuario actual
         if message.sender == Auth.auth().currentUser?.email{
             cell.leftImageView.isHidden = true
             cell.nameLabel.isHidden = true
+            cell.nameBubble.isHidden = true
             cell.rightImageView.isHidden = false
             cell.messageBubble.backgroundColor = UIColor(named: Constants.BrandColors.blue)
         }else{
-            cell.leftImageView.isHidden = false
+            cell.leftImageView.isHidden = true
             cell.rightImageView.isHidden = true
             cell.nameLabel.isHidden = false
             cell.messageBubble.backgroundColor = UIColor(named: Constants.BrandColors.lightRed)
-            cell.nameLabel.backgroundColor = UIColor(named: Constants.BrandColors.lightRed)
         }
 
         return cell

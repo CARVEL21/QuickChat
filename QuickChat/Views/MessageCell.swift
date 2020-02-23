@@ -11,6 +11,7 @@ import UIKit
 class MessageCell: UITableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var nameBubble: UIView!
     @IBOutlet weak var messageBubble: UIView!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var rightImageView: UIImageView!
@@ -20,6 +21,7 @@ class MessageCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         messageBubble.layer.cornerRadius = messageBubble.frame.size.height / 5
+        nameBubble.layer.cornerRadius = nameBubble.frame.size.height / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
