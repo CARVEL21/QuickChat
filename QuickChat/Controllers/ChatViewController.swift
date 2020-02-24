@@ -66,7 +66,7 @@ class ChatViewController: UIViewController {
         let messageSender = ((Auth.auth().currentUser?.email) != nil) ? Auth.auth().currentUser?.email : Auth.auth().currentUser?.displayName
         if let messageBody = messageTextfield.text, (messageSender != nil){
             db.collection(Constants.FStore.collectionName).addDocument(data: [
-                Constants.FStore.senderField: messageSender,
+                Constants.FStore.senderField: messageSender!,
                 Constants.FStore.bodyField: messageBody,
                 Constants.FStore.dateField:Date().timeIntervalSince1970
             ]){(error) in

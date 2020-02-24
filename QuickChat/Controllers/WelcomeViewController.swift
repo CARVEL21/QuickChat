@@ -22,7 +22,6 @@ class WelcomeViewController: UIViewController {
                 print(e.localizedDescription)
             } else {
 //                self.performSegue(withIdentifier: Constants.chatsegue, sender: self)
-                guard let user = authResult?.user else { return }
                 let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
                 changeRequest?.displayName = self.nickName.text
                 changeRequest?.commitChanges { (error) in

@@ -13,6 +13,8 @@ En las siguientes imagenes puedes visualizar la primera ideación del producto.
 ## Alcance del proyecto
 En esta primer iteracion hemos alcanzado las siguientes pantallas.
 
+En el siguiente link se puede visualizar el [video](https://youtu.be/U-fQc6sZPmo) del producto.
+
 1. En esta primer pantalla podemos visualizar los diferentes medios por el que un usuario puede ingresar a la sala
 
     - El usuario puede ingresar solo un nickname
