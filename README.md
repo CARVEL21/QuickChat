@@ -36,6 +36,6 @@ En esta primer iteracion hemos alcanzado las siguientes pantallas.
 
 ## Herramientas utilizadas
 
-El proyecto ha sido desarrollado en el lenguaje de programación [Swift](https://www.apple.com/mx/swift/), junto con otras herramientas de swift package management, como [Firebase authentication](https://firebase.google.com/docs/auth/ios/start?authuser=0) para el registro y login, [Firebase Firestore](https://firebase.google.com/docs/firestore/quickstart?authuser=0) para el almacenamiento de la data y de la conversaciones. Así tambien [IQKeyBoardManager](https://github.com/hackiftekhar/IQKeyboardManager) que nos permite evitar y corregir  este problema en el que el teclado del iPhone se desliza hacia arriba y cubre el UITextField/UITextView.
+El proyecto ha sido desarrollado en el lenguaje de programación [Swift](https://www.apple.com/mx/swift/), junto con otras herramientas, como [Firebase authentication](https://firebase.google.com/docs/auth/ios/start?authuser=0) para el registro y login, [Firebase Firestore](https://firebase.google.com/docs/firestore/quickstart?authuser=0) para el almacenamiento de la data y de la conversaciones. Así tambien  no solo usamos cocoa pods para implementar librerías a terceros sino también la herramienta nativa de Xcode para manejo de librerías de terceros.[IQKeyBoardManager](https://github.com/hackiftekhar/IQKeyboardManager) que nos permite evitar y corregir  este problema en el que el teclado del iPhone se desliza hacia arriba y cubre el UITextField/UITextView.
 
 
